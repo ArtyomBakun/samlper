@@ -1,5 +1,6 @@
 package com.arba.sample;
 
+import com.arba.sample.rendering.MemoryUsageDrawer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
@@ -30,8 +31,7 @@ public class Controller implements Initializable
     public void setPid(Integer pid)
     {
         this.pid = pid;
-        System.out.println(pid);
-        new Drawer(canvas, pid).start();
+        new MemoryUsageDrawer(canvas, pid).start();
     }
 
 }

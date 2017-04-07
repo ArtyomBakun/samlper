@@ -1,6 +1,7 @@
 package com.arba.sample;
 
 import com.arba.sample.model.Proc;
+import com.arba.sample.rendering.MemoryUsageDrawer;
 import com.arba.sample.util.AskJdkUtils;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -27,7 +28,7 @@ public class Main extends Application {
             primaryStage.show();
             Controller controller = loader.getController();
             controller.setPid(pid);
-            primaryStage.setOnCloseRequest(event -> Drawer.killed = true);
+            primaryStage.setOnCloseRequest(event -> MemoryUsageDrawer.killed = true);
         }
     }
 

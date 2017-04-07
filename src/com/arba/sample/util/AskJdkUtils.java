@@ -15,6 +15,10 @@ public class AskJdkUtils
     public static List<String> getMemoryUsageForProcesses(Integer pid){
         return executeCommand("jmap -heap " + pid);
     }
+
+    public static List<String> getMemoryMapForProcesses(Integer pid){
+        return executeCommand("jmap -histo " + pid);
+    }
     
     private static List<String> executeCommand(String command){
         List<String> answer = new ArrayList<>();

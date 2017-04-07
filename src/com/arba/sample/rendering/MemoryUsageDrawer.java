@@ -1,4 +1,4 @@
-package com.arba.sample;
+package com.arba.sample.rendering;
 
 import com.arba.sample.util.AskJdkUtils;
 import javafx.scene.canvas.Canvas;
@@ -13,13 +13,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class Drawer extends Thread
+public class MemoryUsageDrawer extends Thread
 {
     private Canvas canvas;
     private Integer pid;
     public static boolean killed;
     
-    public Drawer(Canvas canvas, Integer pid){
+    public MemoryUsageDrawer(Canvas canvas, Integer pid){
         setDaemon(true);
         setName("Memory usage drawer");
         this.canvas = canvas;
