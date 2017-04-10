@@ -6,8 +6,11 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 
-<TabPane prefHeight="491.0" prefWidth="689.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.arba.sample.Controller">
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<TabPane prefHeight="491.0" prefWidth="689.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.arba.sample.Controller">
   <tabs>
     <Tab closable="false" text="Memory">
       <content>
@@ -24,6 +27,17 @@
             </HBox>
       </content>
     </Tab>
+    <Tab closable="false" text="Histogram">
+         <content>
+            <TableView fx:id="histoTable" prefHeight="200.0" prefWidth="200.0">
+              <columns>
+                <TableColumn fx:id="nameCol" prefWidth="175.0" text="Class name" />
+                <TableColumn fx:id="percentCol" prefWidth="75.0" text="Bytes(%)" />
+                <TableColumn fx:id="bytesCol" prefWidth="75.0" text="Bytes" />
+                <TableColumn fx:id="itemsCol" prefWidth="75.0" text="Instances" />
+              </columns>
+            </TableView>
+         </content></Tab>
     <Tab closable="false" text="CPU" />
   </tabs>
 </TabPane>
