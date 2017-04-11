@@ -59,8 +59,8 @@ public class MemoryUsageDrawer extends Thread
         statistics.add(h*(1.0 - getHeapUsage()));
         Random r = new Random();
         gc.fillRect(0, 0, w, h);
-        for(int i = 0; i < 1000 && !killed; i++){
-            final int curr = i+2;
+        for(long i = 0; !killed; i++){
+            final int curr = (int)i+2;
             long l = System.currentTimeMillis();
             statistics.add(h*(1.0 - getHeapUsage()));
             x = new double[curr];
@@ -71,7 +71,7 @@ public class MemoryUsageDrawer extends Thread
             }
             gc.fillRect(0, 0, w, h);
             gc.strokePolyline(x, y, curr);
-            System.out.println("time " + i + " = " + (System.currentTimeMillis() - l));
+            System.out.println("com.arba.sample.rendering.MemoryUsageDrawer.getHeapUsage call#" + i + " time#" + (System.currentTimeMillis() - l) + " ms");
             Thread.sleep(1000);
         }
     }

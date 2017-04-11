@@ -1,20 +1,19 @@
 package com.arba.sample.model;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 
 public class MemoryItem
 {
     private StringProperty fullName;
     private StringProperty humanReadableName;
+    private DoubleProperty weight;
     private IntegerProperty bytes;
     private IntegerProperty instances;
 
     public MemoryItem(){
         this.fullName = new SimpleStringProperty();
         this.bytes = new SimpleIntegerProperty();
+        this.weight = new SimpleDoubleProperty();
         this.instances = new SimpleIntegerProperty();
     }
 
@@ -22,6 +21,7 @@ public class MemoryItem
     {
         this.fullName = new SimpleStringProperty(fullName);
         this.bytes = new SimpleIntegerProperty(bytes);
+        this.weight = new SimpleDoubleProperty();
         this.instances = new SimpleIntegerProperty(instances);
     }
     
@@ -63,7 +63,7 @@ public class MemoryItem
         this.humanReadableName.set(humanReadableName);
     }
 
-    public double getBytes()
+    public int getBytes()
     {
         return bytes.get();
     }
@@ -76,6 +76,21 @@ public class MemoryItem
     public void setBytes(int bytes)
     {
         this.bytes.set(bytes);
+    }
+
+    public double getWeight()
+    {
+        return weight.get();
+    }
+
+    public DoubleProperty weightProperty()
+    {
+        return weight;
+    }
+
+    public void setWeight(double weight)
+    {
+        this.weight.set(weight);
     }
 
     public int getInstances()

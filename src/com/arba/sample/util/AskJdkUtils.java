@@ -27,6 +27,10 @@ public class AskJdkUtils
         return executeCommand("jmap -histo " + pid);
     }
 
+    public static List<String> getThreadsDumpForProcesses(Integer pid){
+        return executeCommand("jstack " + pid);
+    }
+
     private static List<String> executeCommand(String program){
         List<String> answer = new ArrayList<>();
         Process proc = null;

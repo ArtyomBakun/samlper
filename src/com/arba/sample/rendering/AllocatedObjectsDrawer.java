@@ -2,7 +2,6 @@ package com.arba.sample.rendering;
 
 import com.arba.sample.model.MemoryItem;
 import com.arba.sample.util.AskJdkUtils;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
@@ -20,7 +19,6 @@ public class AllocatedObjectsDrawer extends Thread
 
     public AllocatedObjectsDrawer(TableView histoTable, Integer pid){
         setDaemon(true);
-        setName("Allocated objects drawer");
         this.histoTable = histoTable;
         this.pid = pid;
         items = FXCollections.observableArrayList();
@@ -30,45 +28,42 @@ public class AllocatedObjectsDrawer extends Thread
     public void run()
     {
         histoTable.setItems(items);
-
-        new Timer().schedule(new TimerTask()
+        Timer t = new Timer();
+        t.schedule(new TimerTask()
         {
+            long count = 0;
+
             @Override
             public void run()
             {
-                setDaemon(true);
-                System.out.println("runn");
-                initMemoryHistogram();
-                histoTable.refresh();
+                setName("Allocated objects drawer" + count);
+                if(killed){
+                    t.cancel();
+                }
+                long l = System.currentTimeMillis();
+                getMemoryHistogram();
+                System.out.println("com.arba.sample.rendering.AllocatedObjectsDrawer.getMemoryHistogram call#" + count + " time#" + (System.currentTimeMillis() - l) + " ms");
+                histoTable.setVisible(false);
+                histoTable.setVisible(true);
+                count++;
             }
-        }, 100, 3000);
-//        try
-//        {
-//            for (int i = 0; i < 4; i++)
-//            {
-//                getMemoryHistogram();
-//                System.out.println(i);
-//                Thread.sleep(5000);
-//            }
-//        }
-//        catch (InterruptedException e)
-//        {
-//            e.printStackTrace();
-//        }
+        }, 0, 1000);
     }
     
     private void getMemoryHistogram(){
         List<String> l = AskJdkUtils.getMemoryMapForProcesses(pid);
-        for (int i = 3; i < 3000; i++)
-        {
-            items.set(i - 3, items.get(i - 3).update(l.get(i)));
-        }
-    }
-    private void initMemoryHistogram(){
-        List<String> l = AskJdkUtils.getMemoryMapForProcesses(pid);
+        items.clear();
+        double total = 0;
         for (int i = 3; i < l.size() - 1; i++)
         {
             items.add(new MemoryItem().update(l.get(i)));
+            total += items.get(i - 3).getBytes();
+        }
+        final double totalBytes = total;
+        items.forEach(i -> i.setWeight((i.getBytes()/totalBytes) * 100));
+        for (MemoryItem i : items)
+        {
+            i.setWeight((i.getBytes()/total) * 100);
         }
     }
 }

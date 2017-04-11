@@ -1,6 +1,7 @@
 package com.arba.sample;
 
 import com.arba.sample.model.Proc;
+import com.arba.sample.rendering.AllocatedObjectsDrawer;
 import com.arba.sample.rendering.MemoryUsageDrawer;
 import com.arba.sample.util.AskJdkUtils;
 import javafx.application.Application;
@@ -30,6 +31,13 @@ public class Main extends Application {
             controller.setPid(pid);
             primaryStage.setOnCloseRequest(event -> MemoryUsageDrawer.killed = true);
         }
+    }
+
+    @Override
+    public void stop() throws Exception
+    {
+        super.stop();
+        AllocatedObjectsDrawer.killed = true;
     }
 
     public static void main(String[] args) {
