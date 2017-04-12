@@ -2,6 +2,7 @@ package com.arba.sample.rendering;
 
 import com.arba.sample.model.MemoryItem;
 import com.arba.sample.util.AskJdkUtils;
+import com.arba.sample.util.RenderingUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
@@ -43,8 +44,7 @@ public class AllocatedObjectsDrawer extends Thread
                 long l = System.currentTimeMillis();
                 getMemoryHistogram();
                 System.out.println("com.arba.sample.rendering.AllocatedObjectsDrawer.getMemoryHistogram call#" + count + " time#" + (System.currentTimeMillis() - l) + " ms");
-                histoTable.setVisible(false);
-                histoTable.setVisible(true);
+                RenderingUtils.refreshTableView(histoTable);
                 count++;
             }
         }, 0, 1000);
@@ -52,18 +52,22 @@ public class AllocatedObjectsDrawer extends Thread
     
     private void getMemoryHistogram(){
         List<String> l = AskJdkUtils.getMemoryMapForProcesses(pid);
-        items.clear();
         double total = 0;
         for (int i = 3; i < l.size() - 1; i++)
         {
-            items.add(new MemoryItem().update(l.get(i)));
+            String line = l.get(i);
+            String[] s = line.trim().split("\\s+");
+            items.stream()
+                    .filter(m -> s[3].equals(m.getFullName()))
+                    .findFirst()
+                    .orElseGet(()->{
+                        MemoryItem item = new MemoryItem();
+                        items.add(item);
+                        return item;
+                    }).update(line);
             total += items.get(i - 3).getBytes();
         }
         final double totalBytes = total;
         items.forEach(i -> i.setWeight((i.getBytes()/totalBytes) * 100));
-        for (MemoryItem i : items)
-        {
-            i.setWeight((i.getBytes()/total) * 100);
-        }
     }
 }

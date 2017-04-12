@@ -1,41 +1,60 @@
 package com.arba.sample.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class ThreadInfo
 {
-    private String name;
-    private List<String> state = new ArrayList<>();
-    private List<String> samples = new ArrayList<>();
+    private StringProperty name = new SimpleStringProperty();
+    private ListProperty<String> state = new SimpleListProperty<>(FXCollections.observableArrayList());
+    private ListProperty<String> stacks = new SimpleListProperty<>(FXCollections.observableArrayList());
 
     public String getName()
+    {
+        return name.get();
+    }
+
+    public StringProperty nameProperty()
     {
         return name;
     }
 
     public void setName(String name)
     {
-        this.name = name;
+        this.name.set(name);
     }
 
-    public List<String> getState()
+    public ObservableList<String> getState()
+    {
+        return state.get();
+    }
+
+    public ListProperty<String> stateProperty()
     {
         return state;
     }
 
-    public void setState(List<String> state)
+    public void setState(ObservableList<String> state)
     {
-        this.state = state;
+        this.state.set(state);
     }
 
-    public List<String> getSamples()
+    public ObservableList<String> getStacks()
     {
-        return samples;
+        return stacks.get();
     }
 
-    public void setSamples(List<String> samples)
+    public ListProperty<String> stacksProperty()
     {
-        this.samples = samples;
+        return stacks;
+    }
+
+    public void setStacks(ObservableList<String> stacks)
+    {
+        this.stacks.set(stacks);
     }
 }

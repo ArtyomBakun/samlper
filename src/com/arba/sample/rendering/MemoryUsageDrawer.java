@@ -53,7 +53,6 @@ public class MemoryUsageDrawer extends Thread
         gc.setLineWidth(2);
         gc.setFill(Color.LIGHTGRAY);
         double h = canvas.getHeight(), w = canvas.getWidth();
-        double step = 20;
         List<Double> statistics = new ArrayList<>();
         double[] x, y;
         statistics.add(h*(1.0 - getHeapUsage()));
