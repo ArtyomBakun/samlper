@@ -16,7 +16,7 @@ public class AllocatedObjectsDrawer extends Thread
     private TableView histoTable;
     private Integer pid;
     private ObservableList<MemoryItem> items;
-    public static boolean killed;
+    public boolean killed;
 
     public AllocatedObjectsDrawer(TableView histoTable, Integer pid){
         setDaemon(true);
@@ -57,15 +57,22 @@ public class AllocatedObjectsDrawer extends Thread
         {
             String line = l.get(i);
             String[] s = line.trim().split("\\s+");
-            items.stream()
-                    .filter(m -> s[3].equals(m.getFullName()))
-                    .findFirst()
-                    .orElseGet(()->{
-                        MemoryItem item = new MemoryItem();
-                        items.add(item);
-                        return item;
-                    }).update(line);
-            total += items.get(i - 3).getBytes();
+            try
+            {
+                items.stream()
+                        .filter(m -> s[3].equals(m.getFullName()))
+                        .findFirst()
+                        .orElseGet(() ->
+                        {
+                            MemoryItem item = new MemoryItem();
+                            items.add(item);
+                            return item;
+                        }).update(line);
+                total += items.get(i - 3).getBytes();
+            }catch (ArrayIndexOutOfBoundsException e){
+                System.err.println("line = #" + line + "#");
+                e.printStackTrace();
+            }
         }
         final double totalBytes = total;
         items.forEach(i -> i.setWeight((i.getBytes()/totalBytes) * 100));

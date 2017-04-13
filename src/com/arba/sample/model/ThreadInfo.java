@@ -1,17 +1,24 @@
 package com.arba.sample.model;
 
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class ThreadInfo
 {
     private StringProperty name = new SimpleStringProperty();
+    private BooleanProperty daemon = new SimpleBooleanProperty();
     private ListProperty<String> state = new SimpleListProperty<>(FXCollections.observableArrayList());
     private ListProperty<String> stacks = new SimpleListProperty<>(FXCollections.observableArrayList());
+
+    public ThreadInfo()
+    {
+    }
+
+    public ThreadInfo(String name)
+    {
+        this.name.setValue(name);
+    }
 
     public String getName()
     {
@@ -26,6 +33,21 @@ public class ThreadInfo
     public void setName(String name)
     {
         this.name.set(name);
+    }
+
+    public boolean getDaemon()
+    {
+        return daemon.get();
+    }
+
+    public BooleanProperty daemonProperty()
+    {
+        return daemon;
+    }
+
+    public void setDaemon(boolean daemon)
+    {
+        this.daemon.set(daemon);
     }
 
     public ObservableList<String> getState()

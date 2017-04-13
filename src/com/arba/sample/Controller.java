@@ -10,8 +10,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 
 import java.net.URL;
 import java.util.List;
@@ -20,6 +19,13 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable
 {
     private Integer pid;
+    
+    private MemoryUsageDrawer memoryUsageDrawer;
+    private AllocatedObjectsDrawer allocatedObjectsDrawer;
+    private ThreadsDrawer threadsDrawer;
+
+    @FXML
+    public TabPane mainPane;
     
     @FXML
     private Canvas canvas;
@@ -48,6 +54,15 @@ public class Controller implements Initializable
     @FXML
     public TableColumn<ThreadInfo, String> threadStateCol;
 
+    @FXML
+    public TableColumn<ThreadInfo, Boolean> daemonCol;
+
+    @FXML
+    public TextArea sampleInfoText;
+
+    @FXML
+    public Button deadlocksButton;
+
     public Controller() {
     }
     
@@ -62,8 +77,10 @@ public class Controller implements Initializable
         threadNameCol.setCellValueFactory(cell -> cell.getValue().nameProperty());
         threadStateCol.setCellValueFactory(cell -> {
             List<String> l = cell.getValue().getState();
-            return new SimpleStringProperty(l.get(l.size() - 1));
+            int index = l.size() - 1;
+            return new SimpleStringProperty(index >= 0 ? l.get(index) : "");
         });
+        daemonCol.setCellValueFactory(cell -> cell.getValue().daemonProperty());
     }
 
     public Integer getPid()
@@ -74,9 +91,45 @@ public class Controller implements Initializable
     public void setPid(Integer pid)
     {
         this.pid = pid;
-        new MemoryUsageDrawer(canvas, pid).start();
-        Platform.runLater(new AllocatedObjectsDrawer(histoTable, pid));
-        Platform.runLater(new ThreadsDrawer(threadsTable, pid));
+        memoryUsageDrawer = new MemoryUsageDrawer(canvas, pid);
+        allocatedObjectsDrawer = new AllocatedObjectsDrawer(histoTable, pid);
+        threadsDrawer = new ThreadsDrawer(mainPane, threadsTable, sampleInfoText, deadlocksButton, pid);
+        startBackgroundProcesses();
     }
 
+    private void startBackgroundProcesses(){
+        memoryUsageDrawer.start();
+        Platform.runLater(allocatedObjectsDrawer);
+        Platform.runLater(threadsDrawer);
+    }
+
+    public MemoryUsageDrawer getMemoryUsageDrawer()
+    {
+        return memoryUsageDrawer;
+    }
+
+    public void setMemoryUsageDrawer(MemoryUsageDrawer memoryUsageDrawer)
+    {
+        this.memoryUsageDrawer = memoryUsageDrawer;
+    }
+
+    public AllocatedObjectsDrawer getAllocatedObjectsDrawer()
+    {
+        return allocatedObjectsDrawer;
+    }
+
+    public void setAllocatedObjectsDrawer(AllocatedObjectsDrawer allocatedObjectsDrawer)
+    {
+        this.allocatedObjectsDrawer = allocatedObjectsDrawer;
+    }
+
+    public ThreadsDrawer getThreadsDrawer()
+    {
+        return threadsDrawer;
+    }
+
+    public void setThreadsDrawer(ThreadsDrawer threadsDrawer)
+    {
+        this.threadsDrawer = threadsDrawer;
+    }
 }

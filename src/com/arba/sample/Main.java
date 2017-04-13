@@ -5,6 +5,7 @@ import com.arba.sample.rendering.AllocatedObjectsDrawer;
 import com.arba.sample.rendering.MemoryUsageDrawer;
 import com.arba.sample.util.AskJdkUtils;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -29,15 +30,15 @@ public class Main extends Application {
             primaryStage.show();
             Controller controller = loader.getController();
             controller.setPid(pid);
-            primaryStage.setOnCloseRequest(event -> MemoryUsageDrawer.killed = true);
+            primaryStage.setOnCloseRequest(event -> {
+                System.out.println("Stopping...");
+                controller.getMemoryUsageDrawer().killed = true;
+                controller.getAllocatedObjectsDrawer().killed = true;
+                controller.getThreadsDrawer().killed = true;
+                Platform.exit();
+                System.exit(0);
+            });
         }
-    }
-
-    @Override
-    public void stop() throws Exception
-    {
-        super.stop();
-        AllocatedObjectsDrawer.killed = true;
     }
 
     public static void main(String[] args) {

@@ -31,6 +31,10 @@ public class AskJdkUtils
         return executeCommand("jstack " + pid);
     }
 
+    public static List<String> detectDeadlocksForProcesses(Integer pid){
+        return executeCommand("jstack -F " + pid);
+    }
+
     private static List<String> executeCommand(String program){
         List<String> answer = new ArrayList<>();
         Process proc = null;

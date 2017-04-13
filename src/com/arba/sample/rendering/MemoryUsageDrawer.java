@@ -17,7 +17,7 @@ public class MemoryUsageDrawer extends Thread
 {
     private Canvas canvas;
     private Integer pid;
-    public static boolean killed;
+    public boolean killed;
     
     public MemoryUsageDrawer(Canvas canvas, Integer pid){
         setDaemon(true);
