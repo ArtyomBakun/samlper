@@ -23,9 +23,6 @@ public class Controller implements Initializable
     private MemoryUsageDrawer memoryUsageDrawer;
     private AllocatedObjectsDrawer allocatedObjectsDrawer;
     private ThreadsDrawer threadsDrawer;
-
-    @FXML
-    public TabPane mainPane;
     
     @FXML
     private Canvas canvas;
@@ -93,7 +90,7 @@ public class Controller implements Initializable
         this.pid = pid;
         memoryUsageDrawer = new MemoryUsageDrawer(canvas, pid);
         allocatedObjectsDrawer = new AllocatedObjectsDrawer(histoTable, pid);
-        threadsDrawer = new ThreadsDrawer(mainPane, threadsTable, sampleInfoText, deadlocksButton, pid);
+        threadsDrawer = new ThreadsDrawer(threadsTable, sampleInfoText, deadlocksButton, pid);
         startBackgroundProcesses();
     }
 

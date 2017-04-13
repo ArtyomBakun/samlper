@@ -4,15 +4,20 @@ import com.arba.sample.model.Proc;
 import com.arba.sample.rendering.AllocatedObjectsDrawer;
 import com.arba.sample.rendering.MemoryUsageDrawer;
 import com.arba.sample.util.AskJdkUtils;
+import com.arba.sample.util.RenderingUtils;
+import com.sun.org.apache.regexp.internal.RE;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -20,6 +25,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        RenderingUtils.setIcon(primaryStage);
         Integer pid = selectProcessPid();
         if(pid != null)
         {
@@ -47,6 +53,7 @@ public class Main extends Application {
 
     private Integer selectProcessPid(){
         Dialog<Integer> dialog = new Dialog<>();
+        RenderingUtils.setIcon(dialog);
         dialog.setTitle("Connect to process");
         dialog.setHeaderText("Choose the process by PID:");
 
