@@ -8,6 +8,9 @@ public class ThreadInfo
 {
     private StringProperty name = new SimpleStringProperty();
     private BooleanProperty daemon = new SimpleBooleanProperty();
+    private IntegerProperty osPrio = new SimpleIntegerProperty();
+    private StringProperty tid = new SimpleStringProperty();
+    private StringProperty nid = new SimpleStringProperty();
     private ListProperty<String> state = new SimpleListProperty<>(FXCollections.observableArrayList());
     private ListProperty<String> stacks = new SimpleListProperty<>(FXCollections.observableArrayList());
 
@@ -48,6 +51,51 @@ public class ThreadInfo
     public void setDaemon(boolean daemon)
     {
         this.daemon.set(daemon);
+    }
+
+    public int getOsPrio()
+    {
+        return osPrio.get();
+    }
+
+    public IntegerProperty osPrioProperty()
+    {
+        return osPrio;
+    }
+
+    public void setOsPrio(int osPrio)
+    {
+        this.osPrio.set(osPrio);
+    }
+
+    public String getTid()
+    {
+        return tid.get();
+    }
+
+    public StringProperty tidProperty()
+    {
+        return tid;
+    }
+
+    public void setTid(String tid)
+    {
+        this.tid.set(tid);
+    }
+
+    public String getNid()
+    {
+        return nid.get();
+    }
+
+    public StringProperty nidProperty()
+    {
+        return nid;
+    }
+
+    public void setNid(String nid)
+    {
+        this.nid.set(nid);
     }
 
     public ObservableList<String> getState()

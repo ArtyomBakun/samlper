@@ -48,6 +48,9 @@
                            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                   <columns>
                     <TableColumn fx:id="threadNameCol" prefWidth="250.0" text="Thread name"/>
+                    <TableColumn fx:id="tidCol" prefWidth="70.0" text="Thread ID"/>
+                    <TableColumn fx:id="nidCol" prefWidth="70.0" text="Native thread ID"/>
+                    <TableColumn fx:id="osPrioCol" prefWidth="70.0" text="OS priority"/>
                     <TableColumn fx:id="threadStateCol" prefWidth="150.0" text="State"/>
                     <TableColumn fx:id="daemonCol" prefWidth="70.0" text="Daemon"/>
                   </columns>

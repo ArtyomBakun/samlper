@@ -55,6 +55,15 @@ public class Controller implements Initializable
     public TableColumn<ThreadInfo, Boolean> daemonCol;
 
     @FXML
+    public TableColumn<ThreadInfo, String> tidCol;
+
+    @FXML
+    public TableColumn<ThreadInfo, String> nidCol;
+
+    @FXML
+    public TableColumn<ThreadInfo, Integer> osPrioCol;
+
+    @FXML
     public TextArea sampleInfoText;
 
     @FXML
@@ -72,6 +81,9 @@ public class Controller implements Initializable
         itemsCol.setCellValueFactory(cell -> cell.getValue().instancesProperty().asObject());
 
         threadNameCol.setCellValueFactory(cell -> cell.getValue().nameProperty());
+        osPrioCol.setCellValueFactory(cell -> cell.getValue().osPrioProperty().asObject());
+        tidCol.setCellValueFactory(cell -> cell.getValue().tidProperty());
+        nidCol.setCellValueFactory(cell -> cell.getValue().nidProperty());
         threadStateCol.setCellValueFactory(cell -> {
             List<String> l = cell.getValue().getState();
             int index = l.size() - 1;
