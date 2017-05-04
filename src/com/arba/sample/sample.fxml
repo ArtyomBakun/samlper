@@ -3,6 +3,7 @@
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -10,65 +11,50 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-
 <?import javafx.scene.layout.VBox?>
-<TabPane prefHeight="491.0" prefWidth="689.0" minWidth="689.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.112"
-         xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.arba.sample.Controller">
+
+<TabPane minWidth="689.0" prefHeight="491.0" prefWidth="689.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.arba.sample.Controller">
   <tabs>
     <Tab closable="false" text="Memory">
-      <content>
-        <VBox>
-          <children>
-            <Canvas fx:id="canvas" disable="true" height="401.0" width="601.0"/>
-          </children>
-        </VBox>
-      </content>
+      <VBox>
+        <ScrollPane fx:id="scrollPane">
+          <Canvas fx:id="canvas" disable="true" height="401.0" width="601.0"/>
+        </ScrollPane>
+      </VBox>
     </Tab>
     <Tab closable="false" text="Histogram">
-      <content>
-        <TableView fx:id="histoTable" prefHeight="200.0" prefWidth="200.0">
-          <columns>
-            <TableColumn fx:id="nameCol" editable="false" prefWidth="175.0" text="Class name"/>
-            <TableColumn fx:id="percentCol" prefWidth="75.0" text="Bytes(%)"/>
-            <TableColumn fx:id="bytesCol" prefWidth="75.0" text="Bytes"/>
-            <TableColumn fx:id="itemsCol" prefWidth="75.0" text="Instances"/>
-          </columns>
-        </TableView>
-      </content>
+      <TableView fx:id="histoTable" prefHeight="200.0" prefWidth="200.0">
+        <columns>
+          <TableColumn fx:id="nameCol" editable="false" prefWidth="175.0" text="Class name"/>
+          <TableColumn fx:id="percentCol" prefWidth="75.0" text="Bytes(%)"/>
+          <TableColumn fx:id="bytesCol" prefWidth="75.0" text="Bytes"/>
+          <TableColumn fx:id="itemsCol" prefWidth="75.0" text="Instances"/>
+        </columns>
+      </TableView>
     </Tab>
     <Tab closable="false" text="Threads">
-      <content>
-        <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
-          <items>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-              <children>
-                <TableView fx:id="threadsTable" prefHeight="228.0" prefWidth="689.0" AnchorPane.bottomAnchor="0.0"
-                           AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                  <columns>
-                    <TableColumn fx:id="threadNameCol" prefWidth="250.0" text="Thread name"/>
-                    <TableColumn fx:id="tidCol" prefWidth="70.0" text="Thread ID"/>
-                    <TableColumn fx:id="nidCol" prefWidth="70.0" text="Native thread ID"/>
-                    <TableColumn fx:id="osPrioCol" prefWidth="70.0" text="OS priority"/>
-                    <TableColumn fx:id="threadStateCol" prefWidth="150.0" text="State"/>
-                    <TableColumn fx:id="daemonCol" prefWidth="70.0" text="Daemon"/>
-                  </columns>
-                </TableView>
-              </children>
-            </AnchorPane>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-              <children>
-                <Label layoutY="4.0" text="Select a thread to see details:"/>
-                <Button fx:id="deadlocksButton" AnchorPane.rightAnchor="0.0" mnemonicParsing="false"
-                        text="Detect deadlocks"/>
-                <TextArea fx:id="sampleInfoText" prefHeight="228.0" prefWidth="689.0" AnchorPane.bottomAnchor="0.0"
-                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0"/>
-              </children>
-            </AnchorPane>
-          </items>
-        </SplitPane>
-      </content>
+      <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+          <TableView fx:id="threadsTable" prefHeight="228.0" prefWidth="689.0" AnchorPane.bottomAnchor="0.0"
+                     AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <columns>
+              <TableColumn fx:id="threadNameCol" prefWidth="250.0" text="Thread name"/>
+              <TableColumn fx:id="tidCol" prefWidth="70.0" text="Thread ID"/>
+              <TableColumn fx:id="nidCol" prefWidth="70.0" text="Native thread ID"/>
+              <TableColumn fx:id="osPrioCol" prefWidth="70.0" text="OS priority"/>
+              <TableColumn fx:id="threadStateCol" prefWidth="150.0" text="State"/>
+              <TableColumn fx:id="daemonCol" prefWidth="70.0" text="Daemon"/>
+            </columns>
+          </TableView>
+        </AnchorPane>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+          <Label layoutY="4.0" text="Select a thread to see details:"/>
+          <Button fx:id="deadlocksButton" mnemonicParsing="false" text="Detect deadlocks"
+                  AnchorPane.rightAnchor="0.0"/>
+          <TextArea fx:id="sampleInfoText" prefHeight="228.0" prefWidth="689.0" AnchorPane.bottomAnchor="0.0"
+                    AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0"/>
+        </AnchorPane>
+      </SplitPane>
     </Tab>
   </tabs>
 </TabPane>

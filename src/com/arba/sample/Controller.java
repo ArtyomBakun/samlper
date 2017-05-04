@@ -23,6 +23,9 @@ public class Controller implements Initializable
     private MemoryUsageDrawer memoryUsageDrawer;
     private AllocatedObjectsDrawer allocatedObjectsDrawer;
     private ThreadsDrawer threadsDrawer;
+
+    @FXML
+    private ScrollPane scrollPane;
     
     @FXML
     private Canvas canvas;
@@ -100,7 +103,7 @@ public class Controller implements Initializable
     public void setPid(Integer pid)
     {
         this.pid = pid;
-        memoryUsageDrawer = new MemoryUsageDrawer(canvas, pid);
+        memoryUsageDrawer = new MemoryUsageDrawer(canvas, scrollPane, pid);
         allocatedObjectsDrawer = new AllocatedObjectsDrawer(histoTable, pid);
         threadsDrawer = new ThreadsDrawer(threadsTable, sampleInfoText, deadlocksButton, pid);
         startBackgroundProcesses();

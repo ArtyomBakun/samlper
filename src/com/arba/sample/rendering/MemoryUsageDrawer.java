@@ -3,6 +3,8 @@ package com.arba.sample.rendering;
 import com.arba.sample.util.AskJdkUtils;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
@@ -18,11 +20,13 @@ public class MemoryUsageDrawer extends Thread
     private Canvas canvas;
     private Integer pid;
     public boolean killed;
-    
-    public MemoryUsageDrawer(Canvas canvas, Integer pid){
+    private ScrollPane scrollPane;
+
+    public MemoryUsageDrawer(Canvas canvas, ScrollPane scrollPane, Integer pid){
         setDaemon(true);
         setName("Memory usage drawer");
         this.canvas = canvas;
+        this.scrollPane = scrollPane;
         this.pid = pid;
     }
 
@@ -51,25 +55,22 @@ public class MemoryUsageDrawer extends Thread
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setStroke(Color.BLUE);
         gc.setLineWidth(2);
-        gc.setFill(Color.LIGHTGRAY);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         double h = canvas.getHeight(), w = canvas.getWidth();
-        List<Double> statistics = new ArrayList<>();
-        double[] x, y;
-        statistics.add(h*(1.0 - getHeapUsage()));
+        double step = 10, y0 = h*(1.0 - getHeapUsage()), y1, x0 = step;
         Random r = new Random();
-        gc.fillRect(0, 0, w, h);
         for(long i = 0; !killed; i++){
-            final int curr = (int)i+2;
             long l = System.currentTimeMillis();
-            statistics.add(h*(1.0 - getHeapUsage()));
-            x = new double[curr];
-            y = new double[curr];
-            for(int j = 0; j < curr; j++){
-                x[j] = w*j/(i + 1);
-                y[j] = statistics.get(j);
+            y1 = h*(1.0 - getHeapUsage());
+            if(x0 > w){
+                w += step;
+                canvas.setWidth(w);
+                scrollPane.setHvalue(1.0);
             }
-            gc.fillRect(0, 0, w, h);
-            gc.strokePolyline(x, y, curr);
+            gc.strokeLine((x0-step), y0, x0, y1);
+            x0 += step;
+            y0 = y1;
             System.out.println("com.arba.sample.rendering.MemoryUsageDrawer.getHeapUsage call#" + i + " time#" + (System.currentTimeMillis() - l) + " ms");
             Thread.sleep(1000);
         }
