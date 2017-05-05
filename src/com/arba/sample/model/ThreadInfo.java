@@ -11,8 +11,8 @@ public class ThreadInfo
     private IntegerProperty osPrio = new SimpleIntegerProperty();
     private StringProperty tid = new SimpleStringProperty();
     private StringProperty nid = new SimpleStringProperty();
-    private ListProperty<String> state = new SimpleListProperty<>(FXCollections.observableArrayList());
-    private ListProperty<String> stacks = new SimpleListProperty<>(FXCollections.observableArrayList());
+    private StringProperty state = new SimpleStringProperty();
+    private StringProperty stacks = new SimpleStringProperty();
 
     public ThreadInfo()
     {
@@ -98,32 +98,32 @@ public class ThreadInfo
         this.nid.set(nid);
     }
 
-    public ObservableList<String> getState()
+    public String getState()
     {
         return state.get();
     }
 
-    public ListProperty<String> stateProperty()
+    public StringProperty stateProperty()
     {
         return state;
     }
 
-    public void setState(ObservableList<String> state)
+    public void setState(String state)
     {
         this.state.set(state);
     }
 
-    public ObservableList<String> getStacks()
+    public String getStacks()
     {
         return stacks.get();
     }
 
-    public ListProperty<String> stacksProperty()
+    public StringProperty stacksProperty()
     {
         return stacks;
     }
 
-    public void setStacks(ObservableList<String> stacks)
+    public void setStacks(String stacks)
     {
         this.stacks.set(stacks);
     }

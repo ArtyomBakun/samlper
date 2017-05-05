@@ -87,11 +87,7 @@ public class Controller implements Initializable
         osPrioCol.setCellValueFactory(cell -> cell.getValue().osPrioProperty().asObject());
         tidCol.setCellValueFactory(cell -> cell.getValue().tidProperty());
         nidCol.setCellValueFactory(cell -> cell.getValue().nidProperty());
-        threadStateCol.setCellValueFactory(cell -> {
-            List<String> l = cell.getValue().getState();
-            int index = l.size() - 1;
-            return new SimpleStringProperty(index >= 0 ? l.get(index) : "");
-        });
+        threadStateCol.setCellValueFactory(cell -> cell.getValue().stateProperty());
         daemonCol.setCellValueFactory(cell -> cell.getValue().daemonProperty());
     }
 
