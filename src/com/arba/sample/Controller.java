@@ -29,6 +29,20 @@ public class Controller implements Initializable
     
     @FXML
     private Canvas canvas;
+
+    public Label heapUsageLabel;
+    public Label g1HeapRegionSizeLabel;
+    public Label maxMetaspaceSizeLabel;
+    public Label compressedClassSpaceSizeLabel;
+    public Label metaspaceSizeLabel;
+    public Label newRatioLabel;
+    public Label survivorRatioLabel;
+    public Label oldSizeLabel;
+    public Label maxNewSizeLabel;
+    public Label newSizeLabel;
+    public Label maxHeapSizeLabel;
+    public Label maxHeapFreeRatioLabel;
+    public Label minHeapFreeRatioLabel;
     
     @FXML
     private TableView<MemoryItem> histoTable;
@@ -99,7 +113,20 @@ public class Controller implements Initializable
     public void setPid(Integer pid)
     {
         this.pid = pid;
-        memoryUsageDrawer = new MemoryUsageDrawer(canvas, scrollPane, pid);
+        Label[] labels = {heapUsageLabel, 
+                minHeapFreeRatioLabel, 
+                maxHeapFreeRatioLabel, 
+                maxHeapSizeLabel, 
+                newSizeLabel, 
+                maxNewSizeLabel,
+                oldSizeLabel, 
+                survivorRatioLabel,
+                newRatioLabel,
+                metaspaceSizeLabel, 
+                compressedClassSpaceSizeLabel, 
+                maxMetaspaceSizeLabel, 
+                g1HeapRegionSizeLabel};
+        memoryUsageDrawer = new MemoryUsageDrawer(canvas, scrollPane, labels, pid);
         allocatedObjectsDrawer = new AllocatedObjectsDrawer(histoTable, pid);
         threadsDrawer = new ThreadsDrawer(threadsTable, sampleInfoText, deadlocksButton, pid);
         startBackgroundProcesses();

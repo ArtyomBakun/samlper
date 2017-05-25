@@ -1,32 +1,30 @@
 package com.arba.sample.rendering;
 
 import com.arba.sample.util.AskJdkUtils;
+import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 public class MemoryUsageDrawer extends Thread
 {
+    private final Label[] labels;
     private Canvas canvas;
     private Integer pid;
     public boolean killed;
     private ScrollPane scrollPane;
 
-    public MemoryUsageDrawer(Canvas canvas, ScrollPane scrollPane, Integer pid){
+    public MemoryUsageDrawer(Canvas canvas, ScrollPane scrollPane, Label[] labels, Integer pid){
         setDaemon(true);
         setName("Memory usage drawer");
         this.canvas = canvas;
         this.scrollPane = scrollPane;
+        this.labels = labels;
         this.pid = pid;
     }
 
@@ -35,6 +33,7 @@ public class MemoryUsageDrawer extends Thread
     {
         try
         {
+            Platform.runLater(this::drawMainMemoryInfo);
             drawMemoryUsageGraphic(canvas);
         }
         catch (InterruptedException e)
@@ -62,7 +61,8 @@ public class MemoryUsageDrawer extends Thread
         Random r = new Random();
         for(long i = 0; !killed; i++){
             long l = System.currentTimeMillis();
-            y1 = h*(1.0 - getHeapUsage());
+            double usage = getHeapUsage();
+            y1 = h*(1.0 - usage);
             if(x0 > w){
                 w += step;
                 canvas.setWidth(w);
@@ -71,11 +71,20 @@ public class MemoryUsageDrawer extends Thread
             gc.strokeLine((x0-step), y0, x0, y1);
             x0 += step;
             y0 = y1;
+            Platform.runLater(()-> labels[0].setText("\tHeap usage\t=\t" + usage*100 + "%"));
             System.out.println("com.arba.sample.rendering.MemoryUsageDrawer.getHeapUsage call#" + i + " time#" + (System.currentTimeMillis() - l) + " ms");
             Thread.sleep(1000);
         }
     }
 
+    private void drawMainMemoryInfo(){
+        List<String> memoryInfo = AskJdkUtils.getMemoryUsageForProcesses(pid);
+        for (int i = 9; i < 21; i++)
+        {
+            labels[i-8].setText(memoryInfo.get(i).replaceAll("\\s+", "\t"));
+        }
+    }
+    
     public Canvas getCanvas()
     {
         return canvas;
